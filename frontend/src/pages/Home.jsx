@@ -6,15 +6,104 @@ import StockData from "../components/DashBoard";
 import Autosuggest from 'react-autosuggest';
 import axios from 'axios';
 
+// BST Node class
+class TreeNode {
+  constructor(symbol, name) {
+    this.symbol = symbol;
+    this.name = name;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+// BST class
+class BST {
+  constructor() {
+    this.root = null;
+  }
+
+  insert(symbol, name) {
+    const newNode = new TreeNode(symbol, name);
+    if (this.root === null) {
+      this.root = newNode;
+    } else {
+      this.insertNode(this.root, newNode);
+    }
+  }
+
+  insertNode(node, newNode) {
+    if (newNode.name.toLowerCase() < node.name.toLowerCase()) {
+      if (node.left === null) {
+        node.left = newNode;
+      } else {
+        this.insertNode(node.left, newNode);
+      }
+    } else {
+      if (node.right === null) {
+        node.right = newNode;
+      } else {
+        this.insertNode(node.right, newNode);
+      }
+    }
+  }
+
+  search(node, value) {
+    if (node === null) {
+      return [];
+    }
+
+    const lowerValue = value.toLowerCase();
+    const lowerNodeName = node.name.toLowerCase();
+    if (lowerNodeName.includes(lowerValue)) {
+      return [
+        { symbol: node.symbol, name: node.name },
+        ...this.search(node.left, value),
+        ...this.search(node.right, value),
+      ];
+    } else if (lowerValue < lowerNodeName) {
+      return this.search(node.left, value);
+    } else {
+      return this.search(node.right, value);
+    }
+  }
+
+  find(value) {
+    return this.search(this.root, value);
+  }
+}
+
 function Home() {
   const [stocks, setStocks] = useState([]);
   const [name, setName] = useState("");
   const [current, setCurrent] = useState("");
   const [suggestions, setSuggestions] = useState([]);
+  const [bst, setBst] = useState(new BST());
 
   useEffect(() => {
     getStocks();
+    fetchStockSymbols();
   }, []);
+
+  const fetchStockSymbols = async () => {
+    const apiKey = import.meta.env.VITE_FINNHUB_API_KEY;
+    try {
+      const response = await axios.get('https://finnhub.io/api/v1/stock/symbol', {
+        params: {
+          exchange: 'US',
+          token: apiKey
+        }
+      });
+      const symbols = response.data.map(stock => ({
+        name: stock.description,
+        symbol: stock.symbol
+      }));
+      const newBst = new BST();
+      symbols.forEach(stock => newBst.insert(stock.symbol, stock.name));
+      setBst(newBst);
+    } catch (error) {
+      console.error('Error fetching stock symbols:', error);
+    }
+  };
 
   const getStocks = () => {
     api
@@ -54,26 +143,13 @@ function Home() {
     setCurrent(name);
   };
 
-  const getSuggestions = async (value) => {
-    const apiKey = import.meta.env.VITE_FINNHUB_API_KEY;
-    try {
-      const response = await axios.get('https://finnhub.io/api/v1/search', {
-        params: {
-          q: value,
-          token: apiKey
-        }
-      });
-      return response.data.result
-        .filter(stock => stock.symbol) // Ensure the result has a symbol
-        .map(stock => ({ name: stock.description, symbol: stock.symbol }));
-    } catch (error) {
-      console.error('Error fetching suggestions:', error);
-      return [];
-    }
+  const getSuggestions = (value) => {
+    if (!value) return [];
+    return bst.find(value);
   };
 
-  const onSuggestionsFetchRequested = async ({ value }) => {
-    const fetchedSuggestions = await getSuggestions(value);
+  const onSuggestionsFetchRequested = ({ value }) => {
+    const fetchedSuggestions = getSuggestions(value);
     setSuggestions(fetchedSuggestions);
   };
 
