@@ -172,7 +172,7 @@ function Home() {
   return (
     <div className="main-container">
       <div className="watchlist">
-        <h2>Watch List</h2>
+        <h2 align='center'>Watch List</h2>
         <div className="watchlist-items">
           {stocks.map((stock) => (
             <Stock

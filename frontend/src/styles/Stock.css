@@ -5,7 +5,8 @@
 
 .watchlist {
   /* flex: 1; */
-  margin-right: 20px;
+  margin: 20px auto;
+
 }
 
 .watchlist-items {
@@ -60,8 +61,9 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   padding: 20px;
   max-width: 400px;
-  /* margin: 20px auto; */
+  margin: 20px auto;
   text-align: left;
+  background-color: rgb(195 199 229);
 }
 
 .card-title {
@@ -74,4 +76,12 @@
   font-size: 1.2em;
   margin: 5px 0;
   color: #555;
+}
+
+.add-to-watchlist{
+  text-align: center;
+}
+
+form{
+  margin:auto;
 }

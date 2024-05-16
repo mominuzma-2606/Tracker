@@ -30,7 +30,7 @@ const StockData = ({ Ticker }) => {
   }, [Ticker]); // Include Ticker in the dependency array
 
   if (!Ticker) {
-    return <div>Please select a stock to see the data.</div>;
+    return <div align='center'>Please select a stock to see the data.</div>;
   }
 
   if (error) {
