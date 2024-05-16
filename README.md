@@ -1,8 +1,8 @@
-# Stock Watchlist App
+# Stock Monitoring App
 
 ## Overview
 
-The Stock Watchlist App is a React-based web application that allows users to manage a watchlist of stocks. Users can add stocks to their watchlist, delete stocks from it, and view detailed information about each stock. The app uses the Finnhub API to fetch stock data and provides a fast search experience using a Binary Search Tree (BST) for stock suggestions.
+The Stock Monitoring App is a React-based web application that allows users to manage a watchlist of stocks. Users can add stocks to their watchlist, delete stocks from it, and view detailed information about each stock. The app uses the Finnhub API to fetch stock data and provides a fast search experience using a Binary Search Tree (BST) for stock suggestions.
 
 ## Features
 
@@ -131,4 +131,4 @@ For any questions or feedback, please contact [mominuzma8861@gmail.com](mailto:y
 
 ---
 
-Thank you for using the Stock Watchlist App! Happy investing! 📈
+Thank you for using the Stock Monitoring App! Happy investing! 📈
