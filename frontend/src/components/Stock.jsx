@@ -2,7 +2,7 @@ import React from "react";
 import "../styles/Stock.css"
 import StockQuote from "./FetchPrice";
 
-function Stock({ stock, onDelete }) {
+function Stock({ stock, onDelete, showData }) {
     const formattedDate = new Date(stock.created_at).toLocaleDateString("en-US")
 
     return (
@@ -13,8 +13,8 @@ function Stock({ stock, onDelete }) {
             <button className="delete-button" onClick={() => onDelete(stock.id)}>
                 Delete
             </button>
-            <button className="Show-button" onClick={() => onDelete(stock.id)}>
-                Show more details
+            <button className="delete-button" onClick={() => showData(stock.name)}>
+                Show More
             </button>
         </div>
     );
